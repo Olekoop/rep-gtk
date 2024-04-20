@@ -57,7 +57,7 @@
 (define-func gtk_combo_box_set_title
   none
   ((GtkComboBox box)
-   ((tvec string in) title)))
+   (string title)))
 
 (define-func gtk_combo_box_get_title
   static_string

@@ -4,11 +4,11 @@
 
 (define-func gtk_expander_new
   GtkWidget
-  (((tvec string in) label)))
+  ((string label)))
 
 (define-func gtk_expander_new_with_mnemonic
   GtkWidget
-  (((tvec string in) label)))
+  ((string label)))
 
 (define-func gtk_expander_set_expanded
   none
@@ -31,7 +31,7 @@
 (define-func gtk_expander_set_label
   none
   ((GtkExpander expander)
-   ((tvec string in) label)))
+   (string label)))
 
 (define-func gtk_expander_get_label
   static_string
