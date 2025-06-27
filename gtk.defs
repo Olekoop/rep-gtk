@@ -453,6 +453,9 @@
 
 (define-object GtkWidget (GtkObject)
   (fields
+   (GtkStyle style)
+   (GdkWindow window)
+   (GtkWidget parent)
    (SCM allocation (getter sgtk_gtk_widget_get_allocation))))
 
 (define-boxed GtkTargetEntry
@@ -2345,7 +2348,8 @@
 ;; CheckMenuItem
 
 (define-object GtkCheckMenuItem (GtkMenuItem)
-  (fields))
+  (fields
+   (bool active)))
 
 (define-func gtk_check_menu_item_new
   GtkWidget
@@ -2504,7 +2508,8 @@
 ;; Notebook
 
 (define-object GtkNotebook (GtkContainer)
-  (fields))
+  (fields
+   (GtkPositionType tab_pos)))
 
 (define-func gtk_notebook_new
   GtkWidget
@@ -2856,7 +2861,12 @@
 ;; FontSelectionDialog
 
 (define-object GtkFontSelectionDialog (GtkWindow)
-  (fields))
+  (fields
+   (GtkWidget main_vbox)
+   (GtkWidget action_area)
+   (GtkWidget ok_button)
+   (GtkWidget apply_button)
+   (GtkWidget cancel_button)))
 
 (define-func gtk_font_selection_dialog_new
   GtkWidget
@@ -2883,7 +2893,11 @@
 ;; ColorSelectionDialog
 
 (define-object GtkColorSelectionDialog (GtkWindow)
-  (fields))
+  (fields
+   (GtkWidget colorsel)
+   (GtkWidget ok_button)
+   (GtkWidget cancel_button)
+   (GtkWidget help_button)))
 
 (define-func gtk_color_selection_dialog_new
   GtkWidget
@@ -3093,7 +3107,9 @@
 ;; Dialog
 
 (define-object GtkDialog (GtkWindow)
-  (fields))
+  (fields
+   (GtkWidget vbox)
+   (GtkWidget action_area)))
 
 (define-func gtk_dialog_new
   GtkWidget
@@ -3211,7 +3227,8 @@
 ;; Plug
 
 (define-object GtkPlug (GtkWindow)
-  (fields))
+  (fields
+   (GdkWindow socket_window)))
 
 (define-func gtk_plug_construct
   none
@@ -3225,7 +3242,8 @@
 ;; Socket
 
 (define-object GtkSocket (GtkContainer)
-  (fields))
+  (fields
+   (GdkWindow plug_window)))
 
 (define-func gtk_socket_new
   GtkWidget
@@ -3243,7 +3261,8 @@
 ;; TearoffMenuItem
 
 (define-object GtkTearoffMenuItem (GtkMenuItem)
-  (fields))
+  (fields
+   (bool torn_off)))
 
 (define-func gtk_tearoff_menu_item_new
   GtkWidget
