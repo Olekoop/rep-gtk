@@ -32,6 +32,8 @@
 # include <locale.h>
 #endif
 
+#define NO_GTK1_COMPAT_CODE 1
+
 /* Define this to enable some output during GC and other interesting
    actions. */
 #undef DEBUG_PRINT
@@ -647,8 +649,8 @@ make_gobj (GObject *obj)
   proxy = (sgtk_object_proxy *)rep_ALLOC_CELL (sizeof(sgtk_object_proxy));
   if (GTK_IS_OBJECT (obj))
     {
-      gtk_object_ref (GTK_OBJECT (obj));
-      gtk_object_sink (GTK_OBJECT (obj));
+      g_object_ref (obj);
+      g_object_ref_sink (obj);
     }
   else
     g_object_ref (obj);			/* XXX ref may leak? */
@@ -1431,7 +1433,7 @@ sgtk_color_conversion (repv color)
 	  return Qnil;
 	}
       colmap = gtk_widget_peek_colormap ();
-      if (!gdk_color_alloc (colmap, &colstruct))
+      if (!gdk_colormap_alloc_color (colmap, &colstruct, 1, 0))
 	{
 	  Fsignal (Qerror, rep_list_2 (rep_string_dup ("can't allocate color"),
 				       orig_color));
@@ -2179,8 +2181,8 @@ sgtk_register_input_fd (int fd, void (*callback)(int fd))
 	    input_tags = g_hash_table_new (NULL, NULL);
 	    input_callbacks = g_hash_table_new (NULL, NULL);
 	}
-	tag = gdk_input_add (fd, GDK_INPUT_READ,
-			     (GdkInputFunction) sgtk_input_callback, 0);
+	tag = g_io_add_watch (g_io_channel_unix_new (fd), G_IO_IN,
+			     (GIOFunc) sgtk_input_callback, 0);
 	g_hash_table_insert (input_tags, GINT_TO_POINTER (fd), GINT_TO_POINTER (tag));
 	g_hash_table_insert (input_callbacks,
 			     GINT_TO_POINTER (fd), (gpointer) callback);
@@ -2193,7 +2195,7 @@ sgtk_deregister_input_fd (int fd)
     if (input_tags != 0)
     {
 	int tag = GPOINTER_TO_INT (g_hash_table_lookup (input_tags, GINT_TO_POINTER (fd)));
-	gdk_input_remove (tag);
+	g_source_remove (tag);
 	g_hash_table_remove (input_tags, GINT_TO_POINTER (fd));
 	g_hash_table_remove (input_callbacks, GINT_TO_POINTER (fd));
     }
@@ -2220,7 +2222,7 @@ unset_timeout (void)
     if (context != 0)
     {
 	if (context->gtk_tag != 0)
-	    gtk_timeout_remove (context->gtk_tag);
+	    g_source_remove (context->gtk_tag);
 	context->gtk_tag = 0;
     }
 }
@@ -2234,7 +2236,7 @@ set_timeout (void)
 	context->this_timeout_msecs = rep_input_timeout_secs * 1000;
 	context->actual_timeout_msecs = MIN (context->this_timeout_msecs,
 					     max_sleep);
-	context->gtk_tag = gtk_timeout_add (context->actual_timeout_msecs,
+	context->gtk_tag = g_timeout_add (context->actual_timeout_msecs,
 					    timeout_callback,
 					    (gpointer) context);
     }
@@ -2464,8 +2466,8 @@ sgtk_init_substrate (void)
   rep_sigchld_fun = sgtk_sigchld_callback;
 
   /* Need this in case sit-for is called. */
-  if (GDK_DISPLAY () != 0)
-      rep_register_input_fd (ConnectionNumber (GDK_DISPLAY ()), 0);
+  if (gdk_display_get_default() != 0)
+      rep_register_input_fd (ConnectionNumber (gdk_display_get_default()), 0);
 
   rep_ADD_SUBR (Sgtk_callback_trampoline);
   rep_ADD_SUBR (Sgtk_standalone_p);
@@ -2504,12 +2506,11 @@ sgtk_init_with_args (int *argcp, char ***argvp)
      Actually it shouldn't matter, gtk_init () won't initialise more
      than once.. --jsh */
 
-  if (GDK_DISPLAY () == 0)
+  if (gdk_display_get_default () == 0)
     {
       char *tem = getenv ("REP_GTK_DONT_INITIALIZE");
       if (tem == 0 || atoi (tem) == 0)
         {
-	  gtk_set_locale ();
 	  gtk_init (argcp, argvp);
 
 #ifdef HAVE_SETLOCALE
@@ -2625,6 +2626,6 @@ rep_dl_kill (void)
 	rep_event_loop_fun = 0;
     if (rep_sigchld_fun == sgtk_sigchld_callback)
 	rep_sigchld_fun = 0;
-    if (GDK_DISPLAY () != 0)
-	rep_deregister_input_fd (ConnectionNumber (GDK_DISPLAY ()));
+    if (gdk_display_get_default () != 0)
+	rep_deregister_input_fd (ConnectionNumber (gdk_display_get_default ()));
 }

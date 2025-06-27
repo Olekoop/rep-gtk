@@ -280,9 +280,9 @@
   (private GDK_ACTION_PRIVATE)
   (ask GDK_ACTION_ASK))
 
-(define-enum GdkFillRule
-  (even-odd GDK_EVEN_ODD_RULE)
-  (winding GDK_WINDING_RULE))
+;; (define-enum GdkFillRule
+;;  (even-odd GDK_EVEN_ODD_RULE)
+;;  (winding GDK_WINDING_RULE))
 
 (define-enum GdkOverlapType
   (in GDK_OVERLAP_RECTANGLE_IN)
@@ -300,24 +300,24 @@
     (free gdk_region_destroy))
 
 (define-boxed GdkColormap
-  (copy gdk_colormap_ref)
-  (free gdk_colormap_unref))
+  (copy g_object_ref)
+  (free g_object_unref))
 
 ;;; XXX FIXME
 (define-boxed GdkVisual
   (copy g_object_ref)
   (free g_object_unref))
 
-(define-boxed GdkFont
-  (copy gdk_font_ref)
-  (free gdk_font_unref)
-  (conversion "sgtk_font_conversion"))
+;; (define-boxed GdkFont
+;;  (copy g_object_ref)
+;;  (free g_object_unref)
+;;  (conversion "sgtk_font_conversion"))
 
 (add-options GdkFont (conversion "sgtk_font_conversion"))
 
 (define-boxed GdkWindow
-  (copy gdk_window_ref)
-  (free gdk_window_unref))
+  (copy g_object_ref)
+  (free g_object_unref))
 
 (define-boxed GdkEvent
   (copy gdk_event_copy)
@@ -340,194 +340,20 @@
 (define-object GdkPixmap (GType))
 
 (define-boxed GdkBitmap
-  (copy gdk_bitmap_ref)
-  (free gdk_bitmap_unref))
+  (copy g_object_ref)
+  (free g_object_unref))
 
 ;;; GdkGC
 
-(define-boxed GdkGC
-  (copy gdk_gc_ref)
-  (free gdk_gc_unref))
-
-(define-func gdk_gc_new
-  (GdkGC (copy nil))
-  ((GdkWindow window)))
-
-(define-func gdk_gc_set_foreground
-  none
-  ((GdkGC gc)
-   (GdkColor color)))
-
-(define-func gdk_gc_set_background
-  none
-  ((GdkGC gc)
-   (GdkColor color)))
-
-(define-func gdk_gc_set_font
-  none
-  ((GdkGC gc)
-   (GdkFont font)))
-
-(define-func gdk_gc_set_function
-  none
-  ((GdkGC gc)
-   (GdkFunction function)))
-
-(define-func gdk_gc_set_fill
-  none
-  ((GdkGC gc)
-   (GdkFill fill)))
-
-(define-func gdk_gc_set_tile
-  none
-  ((GdkGC gc)
-   (GdkPixmap tile)))
-
-(define-func gdk_gc_set_stipple
-  none
-  ((GdkGC gc)
-   (GdkPixmap stipple)))
-
-(define-func gdk_gc_set_ts_origin
-  none
-  ((GdkGC gc)
-   (int x)
-   (int y)))
-
-(define-func gdk_gc_set_clip_origin
-  none
-  ((GdkGC gc)
-   (int x)
-   (int y)))
-
-(define-func gdk_gc_set_clip_mask
-  none
-  ((GdkGC gc)
-   (GdkBitmap mask)))
-
-(define-func gdk_gc_set_subwindow
-  none
-  ((GdkGC gc)
-   (GdkSubwindowMode mode)))
-
-(define-func gdk_gc_set_exposures
-  none
-  ((GdkGC gc)
-   (bool exposures)))
-
-(define-func gdk_gc_set_line_attributes
-  none
-  ((GdkGC gc)
-   (int line_width)
-   (GdkLineStyle line_style)
-   (GdkCapStyle cap_style)
-   (GdkJoinStyle join_style)))
-
-(define-func gdk_draw_line
-  none
-  ((GdkWindow window)
-   (GdkGC gc)
-   (int x1)
-   (int y1)
-   (int x2)
-   (int y2)))
-
-(define-func gdk_draw_lines
-  none
-  ((GdkWindow window)
-   (GdkGC gc)
-   ((cvecr GdkPoint) points)))
-
-(define-func gdk_draw_rectangle
-  none
-  ((GdkWindow window)
-   (GdkGC gc)
-   (bool filled)
-   (int x)
-   (int y)
-   (int width)
-   (int height)))
-
-(define-func gdk_draw_polygon
-  none
-  ((GdkWindow window)
-   (GdkGC gc)
-   (bool filled)
-   ((cvecr GdkPoint) points)))
-
-(define-func gdk_draw_arc
-  none
-  ((GdkWindow window)
-   (GdkGC gc)
-   (bool filled)
-   (int x)
-   (int y)
-   (int width)
-   (int height)
-   (int angle1)
-   (int angle2)))
-
-(define-func gdk_draw_string
-  none
-  ((GdkWindow window)
-   (GdkFont font)
-   (GdkGC gc)
-   (int x)
-   (int y)
-   (string string)))
-
-(define-func gdk_window_clear_area
-  none
-  ((GdkWindow window)
-   (int x)
-   (int y)
-   (int width)
-   (int height)))
-
-(define-func gdk_window_clear_area_e
-  none
-  ((GdkWindow window)
-   (int x)
-   (int y)
-   (int width)
-   (int height)))
-
-(define-func gdk_window_xid
-  uint
-  ((GdkWindow window)))
-
-(define-func gdk_pixmap_new
-  GdkWindow
-  ((GdkWindow window (null-ok))
-   (int width)
-   (int height)
-   (int depth (= "-1"))))
-
-(define-func gdk_draw_pixmap
-  none
-  ((GdkWindow drawable)
-   (GdkGC gc)
-   (GdkWindow src)
-   (int xsrc)
-   (int ysrc)
-   (int xdest)
-   (int ydest)
-   (int width)
-   (int height)))
-
-(define-func gdk_set_locale
-  static_string
-  ())
-
 ;; Gdk functions
 
-(define-func gdk_font_load
-  (GdkFont (copy nil))
-  ((string name)))
+;; (define-func gdk_font_load
+;;  (GdkFont (copy nil))
+;;  ((string name)))
 
-(define-func gdk_fontset_load
-  (GdkFont (copy nil))
-  ((string name)))
+;; (define-func gdk_fontset_load
+;;  (GdkFont (copy nil))
+;;  ((string name)))
 
 (define-func gdk_flush
   none
@@ -553,9 +379,9 @@
   GdkColor
   ((GdkColor color)))
 
-(define-func gdk_font_intern
-  GdkFont
-  ((GdkFont font)))
+;; (define-func gdk_font_intern
+;;  GdkFont
+;;  ((GdkFont font)))
 
 (define-func gdk_event_type
   GdkEventType

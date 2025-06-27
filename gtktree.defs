@@ -62,10 +62,6 @@
   GtkTreePath
   ((GtkTreePath path)))
 
-(define-func gtk_tree_path_get_type
-  type
-  ())
-
 (define-func gtk_tree_path_compare
   int
   ((GtkTreePath path1)
@@ -100,10 +96,6 @@
 (define-boxed GtkTreeRowReference
   (copy gtk_tree_row_reference_copy)
   (free gtk_tree_row_reference_free))
-
-(define-func gtk_tree_row_reference_get_type
-  type
-  ())
 
 (define-func gtk_tree_row_reference_new
   GtkTreeRowReference
@@ -160,10 +152,6 @@
 (define-func gtk_tree_iter_free
   none
   ((GtkTreeIter iter)))
-
-(define-func gtk_tree_iter_get_type
-  type
-  ())
 
 (define-func gtk_tree_model_get_iter
   bool
@@ -291,15 +279,8 @@
 (define-boxed GDestroyNotify
   ((GPointer data)))
 
-(define-boxed GtkDestroyNotify
-  ((GPointer data)))
-
-(define-func gtk_tree_selection_set_select_function
-  none
-  ((GtkTreeSelection selection)
-   (GtkTreeSelectionFunc func)
-   (GPointer data)
-   (GtkDestroyNotify destroy)))
+; (define-boxed GtkDestroyNotify
+;  ((GPointer data)))
 
 (define-func gtk_tree_selection_get_user_data
   GPointer
@@ -762,21 +743,6 @@
    ((tvec int in) column)
    ((tvec GtkSortType in) type)))
 
-(define-func gtk_tree_sortable_set_sort_func
-  none
-  ((GtkTreeSortable sortable)
-   (int column)
-   (GtkTreeIterCompareFunc func)
-   (GPointer data)
-   (GtkDestroyNotify destroy)))
-
-(define-func gtk_tree_sortable_set_default_sort_func
-  none
-  ((GtkTreeSortable sortable)
-   (GtkTreeIterCompareFunc func)
-   (GPointer data)
-   (GtkDestroyNotify destroy)))
-
 (define-func gtk_tree_sortable_has_default_sort_func
   bool
   ((GtkTreeSortable sortable)))
@@ -989,13 +955,6 @@
    (GtkTreeViewColumn prev)
    (GtkTreeViewColumn next)
    (GPointer data)))
-
-(define-func gtk_tree_view_set_column_drag_function
-  none
-  ((GtkTreeView tree)
-   (GtkTreeViewColumnDropFunc func)
-   (GPointer data)
-   (GtkDestroyNotify destroy)))
 
 ;; GtkTreeView [Actions]
 

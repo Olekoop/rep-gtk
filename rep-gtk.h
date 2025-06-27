@@ -284,7 +284,7 @@ GdkGC *gtk_style_bg_gc (GtkStyle *style, GtkStateType state);
 
 /* Gtk stuff that wouldn't be here in an ideal world. */
 
-gchar *gtk_label_get_interp (GtkLabel *label);
+const gchar *gtk_label_get_interp (GtkLabel *label);
 void gtk_menu_popup_interp (GtkMenu *menu,
 			    GtkWidget *parent_menu_shell,
 			    GtkWidget *parent_menu_item,
@@ -311,14 +311,19 @@ GdkColor *gtk_style_get_white_interp (GtkStyle *style);
 GdkColormap *gtk_widget_peek_colormap (void);
 #endif
 
+#if 0
 void gtk_list_append_item (GtkList *list, GtkListItem *item);
 void gtk_list_prepend_item (GtkList *list, GtkListItem *item);
+#endif
 
-#ifndef HAVE_GTK_TYPE_GET_INFO
+#if 0
 gboolean gtk_type_get_info (GtkType type, GtkTypeInfo *info);
 #endif
 
+#if 0
 GtkType gtk_class_new (GtkType parent_type, gchar *name);
+
+
 guint
 gtk_signal_new_generic (const gchar     *name,
 			GtkSignalRunType signal_flags,
@@ -326,9 +331,10 @@ gtk_signal_new_generic (const gchar     *name,
 			GtkType          return_type,
 			guint            nparams,
 			GtkType         *params);
+#endif
 void sgtk_signal_emit (GtkObject *obj, char *name, repv rep_args);
 
-#ifndef HAVE_GTK_SIGNAL_SET_CLASS_FUNCTION_FULL
+#if 0
 void gtk_signal_set_class_function_full (GtkType            type,
 					 const gchar       *signal,
 					 GtkSignalFunc      func,

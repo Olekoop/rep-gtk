@@ -319,7 +319,3 @@
   GtkWidget
   ((GtkFileChooserAction action)))
 
-(define-func gtk_file_chooser_widget_new_with_backend
-  GtkWidget
-  ((GtkFileChooserAction action)
-   (string backend)))

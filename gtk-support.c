@@ -479,8 +479,10 @@ gtk_text_iter_new (void)
 repv
 sgtk_gtk_widget_get_allocation (GtkWidget *w)
 {
-    return Fcons (Fcons (rep_MAKE_INT (w->allocation.x),
-			 rep_MAKE_INT (w->allocation.y)),
-		  Fcons (rep_MAKE_INT (w->allocation.width),
-			 rep_MAKE_INT (w->allocation.height)));
+    GtkAllocation* allocation;
+    gtk_widget_get_allocation(w, allocation);
+    return Fcons (Fcons (rep_MAKE_INT (allocation->x),
+			 rep_MAKE_INT (allocation->y)),
+		  Fcons (rep_MAKE_INT (allocation->width),
+			 rep_MAKE_INT (allocation->height)));
 }

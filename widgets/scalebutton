@@ -8,12 +8,12 @@
    (double min)
    (double max)
    (double step)
-   ((tvec string in) icons)))
+   ((tvec static_string in) icons)))
 
 (define-func gtk_scale_button_set_icons
   none
   ((GtkScaleButton button)
-   ((tvec string in) icons)))
+   ((tvec static_string in) icons)))
 
 (define-func gtk_scale_button_get_value
   double

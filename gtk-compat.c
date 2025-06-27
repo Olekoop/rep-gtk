@@ -5,11 +5,10 @@
 
 /* This whole file is rated XXX. */
 
-gchar*
+const gchar*
 gtk_label_get_interp (GtkLabel *label)
 {
-  gchar *str;
-  gtk_label_get (label, &str);
+  const gchar *str = gtk_label_get_text (label);
   return str;
 }
 
@@ -67,7 +66,7 @@ GtkWidget*
 gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
 		                                                const gchar      *label)
 {
-	  GSList *g = group? gtk_radio_menu_item_group (group) : NULL;
+	  GSList *g = group? gtk_radio_menu_item_get_group (group) : NULL;
 	    return gtk_radio_menu_item_new_with_label (g, label);
 }
 
@@ -75,18 +74,19 @@ GtkWidget*
 gtk_radio_menu_item_new_with_mnemonic_from_widget (GtkRadioMenuItem *group,
 		                                                   const gchar      *label)
 {
-	  GSList *g = group? gtk_radio_menu_item_group (group) : NULL;
+	  GSList *g = group? gtk_radio_menu_item_get_group (group) : NULL;
 	    return gtk_radio_menu_item_new_with_mnemonic (g, label);
 }
 
 GtkWidget*
 gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group)
 {
-	  GSList *g = group? gtk_radio_menu_item_group (group) : NULL;
+	  GSList *g = group? gtk_radio_menu_item_get_group (group) : NULL;
 	    return gtk_radio_menu_item_new (g);
 }
 #endif /* < 2.4 */
 
+#if 0
 GtkWidget*
 gtk_pixmap_new_interp (gchar *file,
 		       GtkWidget *intended_parent)
@@ -101,6 +101,7 @@ gtk_pixmap_new_interp (gchar *file,
 				       file);
   return gtk_pixmap_new (pixmap, mask);
 }
+#endif
 
 GdkColor*
 gdk_color_parse_interp (char *spec)
@@ -126,6 +127,7 @@ gtk_widget_peek_colormap ()
 }
 #endif
 
+#if 0
 void
 gtk_list_append_item (GtkList *list, GtkListItem *item)
 {
@@ -141,8 +143,9 @@ gtk_list_prepend_item (GtkList *list, GtkListItem *item)
   items->data = item;
   gtk_list_prepend_items (list, items);
 }
+#endif
 
-#ifndef HAVE_GTK_TYPE_GET_INFO
+#if 0
 gboolean
 gtk_type_get_info (GtkType type, GtkTypeInfo *info)
 {
@@ -151,7 +154,7 @@ gtk_type_get_info (GtkType type, GtkTypeInfo *info)
 }
 #endif
 
-#ifndef HAVE_GTK_SIGNAL_SET_CLASS_FUNCTION_FULL
+#if 0
 void
 gtk_signal_set_class_function_full (GtkType            type,
 				    const gchar       *signal,
@@ -165,6 +168,7 @@ gtk_signal_set_class_function_full (GtkType            type,
 }
 #endif
 
+#if 0
 void
 gtk_color_selection_set_color_interp (GtkColorSelection *selection, GdkColor *color)
 {
@@ -177,26 +181,20 @@ gtk_color_selection_set_color_interp (GtkColorSelection *selection, GdkColor *co
 
   gtk_color_selection_set_color (selection, vals);
 }
+#endif
 
+void
+gtk_color_selection_set_color_interp (GtkColorSelection *selection, GdkColor *color)
+{
+  gtk_color_selection_set_current_color(selection, color);
+}
 
 GdkColor *
 gtk_color_selection_get_color_interp (GtkColorSelection *selection)
 {
-  gdouble vals[4];
-  GdkColor dummy, *color;
+  GdkColor *color;
 
-  gtk_color_selection_get_color (selection, vals);
-
-  /* XXX I don't know if this is a sensible way to obtain a new
-     GdkColor */
-  color = gdk_color_copy (&dummy);
-
-  /* Since this color is not part of a colormap, the pixel value is
-     pointless */
-  color->pixel = 0;
-  color->red = (gushort) (65535.0 * vals[0]);
-  color->green = (gushort) (65535.0 * vals[1]);
-  color->blue = (gushort) (65535.0 * vals[2]);
+  gtk_color_selection_get_current_color (selection, color);
 
   return color;
 }
@@ -218,7 +216,7 @@ gtk_color_button_get_color_interp (GtkColorButton *button)
 void
 gtk_widget_draw_interp (GtkWidget *widget)
 {
-    gtk_widget_draw (widget, NULL);
+    //gtk_widget_draw (widget, NULL);
 }
 
 /* status icon hack */

@@ -816,12 +816,7 @@
 	  ((eq outer-type 'cvecr)
 	   (@ "\(%s*\) %s.vec, %s.count" decl var var))
 	  ((memq outer-type '(fvec ret tvec))
-	   (if (or (string= var "c_icons")
-	           (string= var "c_authors")
-	           (string= var "c_artists")
-	           (string= var "c_documenters"))
-	       (@ "\(const %s*\) %s.vec" decl var)
-	     (@ "\(%s*\) %s.vec" decl var)))
+	     (@ "\(%s*\) %s.vec" decl var))
 	  (t
 	   (gtk-warning "Don't know how to pass type %s" type)))))
 
@@ -1251,7 +1246,7 @@
 
 ;; initialisation
 
-(define-type 'type "GtkType" "sgtk_rep_to_type"
+(define-type 'type "GType" "sgtk_rep_to_type"
 	     "sgtk_type_to_rep" "sgtk_valid_type")
 
 (define-type 'GValue "GValue" "sgtk_rep_to_gvalue"
@@ -1311,8 +1306,8 @@
 (define-type 'object output-complex-type output-rep-to-object
 	     output-object-to-rep output-object-pred '(listable . t))
 
-(define-type 'static_string "const char*" nil
-	     "sgtk_static_string_to_rep" nil '(listable . t))
+(define-type 'static_string "const char*" "sgtk_rep_to_string"
+	     "sgtk_static_string_to_rep" "sgtk_valid_string" '(listable . t))
 
 (define-type 'full-callback "sgtk_protshell*" output-rep-to-full-callback nil
 	     "sgtk_valid_function" (cons 'c2args output-full-callback-args)
